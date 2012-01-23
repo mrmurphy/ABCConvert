@@ -1,0 +1,88 @@
+body {
+    margin: 0px;
+    padding: 0px;
+    font-family: Arial;
+	background-color: #444444;
+	background-image: url("../images/bg.png");
+	color: white;
+	text-align: center;
+}
+
+
+#wrapper{
+    margin: auto;
+    padding: 0px;
+}
+
+#headerimg{
+    width: 120px;
+    margin: 0px;
+    border: none;
+}
+
+#controls{
+    margin 0px;
+    width: 460px;
+    background: rgba(180, 180, 180, 0.1);
+    border-radius: 7px;
+    padding: 15px;
+}
+
+#inputdiv{
+    text-align: left;
+    font-size: 20px;
+    text-shadow: 1px 2px 0px rgba(0, 0, 0, 0.7);
+    background: rgba(200, 200, 200, 0.1);
+    border-radius: 7px;
+    padding: 15px;
+}
+
+/**** Styling of form elements: *  ****/
+input {
+	background: none;
+    border: none;
+}
+input:focus {
+    outline: none;
+}
+
+#fwrap{
+    border: 10px;
+	/* Remember to write about this, it was hard to find the specific sytnax. */
+	-webkit-border-image: url(../images/field.png) 10 repeat;
+}
+input.field {
+    font-weight: bold;
+    font-size: 16px;
+    color: rgb(155,155,155);
+    width: 100%;
+}
+
+input.button{
+    padding: 10px;
+    font-size: 22px;
+    font-weight: bold;
+    color: white; 
+    text-shadow: 1px 2px 0px black;
+    border: 10px;
+    width: 100%;
+    -webkit-border-image: url(../images/blue_button.png) 10 stretch;
+}
+input.button:hover { -webkit-border-image: url(../images/blue_button_over.png) 10 stretch; }
+input.button:active { -webkit-border-image: url(../images/blue_button_down.png) 10 stretch; }
+/***************************/
+
+/**** For the output area ****/
+#output {
+	background: rgba(180, 180, 180, 0.2);
+    border-radius: 7px;
+    padding: 15px;
+}
+#output a{
+    display: block;
+    color: white;
+    font-size: 12px;
+    margin-top: 10px;
+    border: 10px;
+    -webkit-border-image: url(../images/red_button.png) 10 stretch;
+}

@@ -1,0 +1,41 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <LINK href="styles/main.css" rel="stylesheet" type="text/css">
+        <title>ABC Convert!</title>
+    </head>
+    <body>
+        <div id="wrapper">
+                <img id="headerimg" src="images/logo.png" alt="Alembic logo" /><br>
+                <div id="controls">
+                    <form action="index.html">
+                        <div id="inputdiv">
+                            <label for="shot_field">Enter your shot:</label><br>
+                            <div id="fwrap">
+                                <input type="text" name="shot_field" id="shot_field" class="field" value="Something like: A_13">
+                            </div>
+                        </div>
+                        <br>
+                        <div id="output">
+                            <div id="output_text">
+                                There will be output here, when we're done.
+                            </div>
+                            <a id="reset_button">Reset, and do it again!</a>
+                        </div>
+                        <input type="SUBMIT" name="go_button" id="go_button" class="button" value="Go!">
+                    </form>
+                </div>
+                <div id="pythonstuff">
+                This should be hidden by python and jquery...
+                <script type="text/python">
+                    jQuery("#pythonstuff").hide()
+                </script>
+                </div>
+        </div>
+        <script src="javasc/jquery.js"></script>
+        <script src="javasc/jquery.center.mlklc.js"></script>
+        <script src="javasc/mainpage.js"></script>
+        <script src="javasc/main.py"></script>
+        </body>
+    </html>
