@@ -16,8 +16,13 @@ class Shot(threading.Thread):
         return finished
     
     def run(self):
-        self.log += "Just starting sleeping process. \n"
-        time.sleep(1);
-        self.log += "Just finishing sleeping process. \n"
-        alert("Convert finished");
+        self.log = "Just starting sleeping process."
+        Titanium.API.runOnMainThreadAsync(writeOut, self.log)
+        time.sleep(3);
+        self.log = "Just finishing sleeping process."
+        Titanium.API.runOnMainThreadAsync(writeOut, self.log)
         self.finished = True;
+
+    def UpdateLog(self, message):
+        self.log += message
+        

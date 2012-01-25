@@ -50,7 +50,7 @@ input {
     border: none;
 }
 input:focus {
-    outline: none;
+    /*outline: none;*/
 }
 
 #fwrap{
@@ -95,7 +95,7 @@ input.button:active { -webkit-border-image: url(../images/blue_button_down.png) 
     color: rgb(180, 180, 180);
     overflow: auto;
 }
-#output a{
+#reset_button{
     display: block;
     color: white;
     font-size: 12px;
