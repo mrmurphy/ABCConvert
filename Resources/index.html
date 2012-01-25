@@ -7,31 +7,34 @@
     </head>
     <body>
         <div id="wrapper">
+            <div id="ui">
                 <aside id="logo">
                 <img id="headerimg" src="images/logo.png" alt="Alembic logo" /><br>
                 </aside>
                 <div id="controls">
-                    <form action="index.html">
-                        <div id="inputdiv">
-                            <label for="shot_field">Enter your shot:</label><br>
-                            <div id="fwrap">
+                    <div id="inputdiv">
+                        Enter your shot:<br>
+                        <div id="fwrap">
+                            <form>
                                 <input type="text" name="shot_field" id="shot_field" class="field" value="Something like: A_13">
                             </div>
+                            <input type="SUBMIT" name="go_button" id="go_button" class="button" value="Go!">
+                        </form>
+                    </div>
+                    <div id="output">
+                        <div id="output_text">
+                            There will be output here, when we're done.
                         </div>
-                        <br>
-                        <div id="output">
-                            <div id="output_text">
-                                There will be output here, when we're done.
-                            </div>
-                            <a id="reset_button">Reset, and do it again!</a>
-                        </div>
-                        <input type="SUBMIT" name="go_button" id="go_button" class="button" value="Go!">
-                    </form>
+                        <a id="reset_button">Do another one!</a>
+                    </div>
                 </div>
+            </div>
         </div>
         <script src="javasc/jquery.js"></script>
-        <script src="javasc/jquery.center.mlklc.js"></script>
-        <script src="javasc/mainpage.js"></script>
-        <script src="javasc/main.py"></script>
-        </body>
-    </html>
+        <script>
+            $.getScript("javasc/jquery.center.mlklc.js", function(){
+                $.getScript("javasc/visual.js");
+            });
+        </script>
+    </body>
+</html>

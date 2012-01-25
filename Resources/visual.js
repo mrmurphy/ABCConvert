@@ -1,6 +1,4 @@
 $(document).ready(function(){
-    // Do python imports:
-    Titanium.include("python/sleep.py");
     /// Establish some global variables:
     var out = $('#output');
     var outtext = $('#output_text');
@@ -21,7 +19,7 @@ $(document).ready(function(){
     $("input#go_button").click(function(event){
         event.preventDefault();
         var shotname = $('#shot_field').val();
-        F_processShot(shotname);
+        F_openOutput();
     });
     // Handle event for reset button;
     var resetbutton = $('#reset_button');
@@ -33,23 +31,16 @@ $(document).ready(function(){
         });
     });
 
-    var F_writeOutText = function(text){
+    F_writeOutText = function(text){
        var message = text + "<br>"+logmessage;
        outtext.html(message);
     }
 
-    var F_processShot = function(shotname){
+    var F_openOutput = function(){
         $("#inputdiv").slideToggle(100);
         out.slideToggle(100, function(){
             ui.center({transition:100})
         });
-		var foo = Shot(shotname);
-		foo.start();
-        var message = "I have converted ";
-        message += shotname;
-        message += ", have fun!";
-        message += "<br>";
-        F_writeOutText(message);		
     }
 
     // Hide the output box.
