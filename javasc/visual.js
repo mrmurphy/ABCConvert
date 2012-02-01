@@ -52,6 +52,5 @@ $(document).ready(function(){
     $(window).bind('resize', function() {
         ui.center();
     });
-    Titanium.include("javasc/data.js");
 });
 
