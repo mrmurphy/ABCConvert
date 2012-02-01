@@ -44,7 +44,7 @@ $(document).ready(function(){
     }
 
     // Hide the output box.
-    $('#output').hide();
+    //$('#output').hide();
     // I don't know why I have to do this twice..
     ui.center();
 
@@ -52,5 +52,7 @@ $(document).ready(function(){
     $(window).bind('resize', function() {
         ui.center();
     });
+
+    $(".easybars").easyBars();
 });
 

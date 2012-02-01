@@ -9,7 +9,7 @@
         <div id="wrapper">
             <div id="ui">
                 <aside id="logo">
-                <img id="headerimg" src="images/logo.png" alt="Alembic logo" /><br>
+                <img id="headerimg" src="/images/logo.png" alt="Alembic logo" /><br>
                 </aside>
                 <div id="controls">
                     <div id="inputdiv">
@@ -25,6 +25,11 @@
                         <div id="output_text">
                             There will be output here, when we're done.
                         </div>
+                        <div class="easybars" id="progressbar">
+                            <span class="current">50</span>
+                            <span class="total">100</span>
+                            <span class="label">Converting shot...</span>
+                        </div>
                         <input type="SUBMIT" id="reset_button" value="Do another one!">
                     </div>
                 </div>
@@ -32,15 +37,9 @@
         </div>
         <script src="javasc/jquery.js"></script>
         <script src="javasc/jquery.center.mlklc.js"></script>
+        <script src="javasc/jqueryprogressbar.js"></script>
         <script src="javasc/visual.js"></script>
         <script src="javasc/data.js"></script>
-        <!--
-        <script>
-            $.getScript("javasc/jquery.center.mlklc.js", function(){
-                $.getScript("javasc/visual.js");
-                $.getScript("javasc/data.js");
-            });
-        </script>
-        --!>
     </body>
 </html>
+

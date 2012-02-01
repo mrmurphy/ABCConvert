@@ -1,11 +1,10 @@
 import time
-import threading
 import sqlite3
+import multiprocessing as mproc
 
-class Shot(threading.Thread):
+class Shot():
     def __init__(self, shotName, dbname="shots.sqlite"):
         self.shotName = shotName
-        threading.Thread.__init__(self)
         #DB Stuff:
         self.dbname = dbname
         self.OpenDB()
@@ -18,6 +17,10 @@ class Shot(threading.Thread):
         self.CommitAndCloseDB()
 
     def run(self):
+        p = mproc.Process(target=self.ProcessShot)
+        p.start()
+
+    def ProcessShot(self):
         self.UpdateLog("Just starting to sleep...")
         time.sleep(5)
         self.UpdateLog("Just finished sleeping.")
@@ -57,7 +60,7 @@ class Shot(threading.Thread):
     def GetId(self):
         return self.rowid
 
-    def GetStatus(self):
+    def GetFinished(self):
         self.OpenDB()
         self.cur.execute("SELECT finished FROM Shots WHERE rowid=?",
                 (self.rowid,))
@@ -72,3 +75,4 @@ class Shot(threading.Thread):
         retstr = str(self.cur.fetchone()[0])
         self.CommitAndCloseDB()
         return retstr
+

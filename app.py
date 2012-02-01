@@ -2,25 +2,29 @@ import sys
 sys.path.append("python/")
 from bottle import route, run, static_file
 import Shot
-import ShotDBInterface
 
-curShot = Shot.Shot("default")
-curSid = curShot.GetId()
-sdb = ShotDBInterface.ShotDBInterface("shots.sqlite")
+shots = {}
+CurShotId = 0
+#curSid = curShot.GetId()
 
 @route('/NewConvert/:name')
 def NewShot(name=''):
-    curShot.SetName(name)
+    global shots
+    global CurShotId
+    curShot = Shot.Shot(name)
+    CurShotId = curShot.GetId()
+    shots[CurShotId] = curShot
     curShot.run()
     return '<b>Now converting %s!</b>' % name
 
-@route('/CheckStatus')
-def CheckStatus():
-    """
-    stats = sdb.GetStatus(curSid)
-    return {'stats':stats}
-    """
-    return {'stats':"True"}
+@route('/CheckShot')
+def CheckShot():
+    global shots
+    global CurShotId
+    print "I'm in checkshot"
+    finished = shots[CurShotId].GetFinished()
+    log = shots[CurShotId].GetLog()
+    return {'finished':finished, 'log':log}
 
 # For routing normal html
 @route('/main')

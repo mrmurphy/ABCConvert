@@ -1,3 +1,5 @@
+@import url("buttons.css");
+@import url("progressbar.css");
 {margin 0px; border: 0px; padding 0px;}
 
 body {
@@ -5,7 +7,7 @@ body {
     height: 100%;
     margin: 0px;
     padding: 0px;
-    overflow: hidden;
+    /*overflow: hidden;*/
     font-family: Arial;
 	background-color: #444444;
 	background-image: url("../images/bg.png");
@@ -66,25 +68,6 @@ input.field {
     width: 100%;
 }
 
-input.button{
-    padding: 10px;
-    font-size: 22px;
-    font-weight: bold;
-    color: white; 
-    text-shadow: 1px 2px 0px black;
-    border: 10px;
-    width: 100%;
-    -webkit-border-image: url(../images/blue_button.png) 10 stretch;
-    -moz-border-image: url(../images/blue_button.png) 10 stretch;
-}
-input.button:hover { 
-    -webkit-border-image: url(../images/blue_button_over.png) 10 stretch; 
-    -moz-border-image: url(../images/blue_button_over.png) 10 stretch; 
-}
-input.button:active { 
-    -webkit-border-image: url(../images/blue_button_down.png) 10 stretch; 
-    -moz-border-image: url(../images/blue_button_down.png) 10 stretch; 
-}
 /***************************/
 
 /**** For the output area ****/
@@ -112,3 +95,5 @@ input.button:active {
     -webkit-border-image: url(../images/red_button.png) 10 stretch;
     -moz-border-image: url(../images/red_button.png) 10 stretch;
 }
+
+
