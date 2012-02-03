@@ -1,11 +1,19 @@
+## Append to path:
 import sys
 sys.path.append("python/")
-from bottle import route, run, static_file
+## Do imports:
+from bottle import route, run, static_file, template
 import Shot
+#######################
 
 shots = {}
 CurShotId = 0
 #curSid = curShot.GetId()
+
+# For routing normal html
+@route('/main')
+def MainPage():
+    return template('templates/main')
 
 @route('/NewConvert/:name')
 def NewShot(name=''):
@@ -25,13 +33,6 @@ def CheckShot():
     finished = shots[CurShotId].GetFinished()
     log = shots[CurShotId].GetLog()
     return {'finished':finished, 'log':log}
-
-# For routing normal html
-@route('/main')
-def MainPage():
-    htmllist = open("html/index.html", 'r').readlines()
-    htmlstr = " ".join(htmllist)
-    return htmlstr
 
 @route('/images/:filename')
 def GetImage(filename):

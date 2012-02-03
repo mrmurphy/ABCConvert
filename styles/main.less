@@ -1,0 +1,25 @@
+@import "mixins";
+@bgcolor: #444444;
+body {
+    width: 100%;
+    height: 100%;
+    margin: 0px;
+    padding: 0px;
+    font-family: Arial;
+    background-color: @bgcolor;
+	background-image: url("../images/bg.png");
+	color: white;
+	text-align: center;
+    .display-box();
+    .box-orient(horizontal);
+    .box-align(stretch);
+}
+
+#sidebar {
+    background: purple;
+    width: 70px;
+}
+
+#stage {
+    .box-flex(1);
+}
