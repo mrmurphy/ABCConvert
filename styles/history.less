@@ -1,0 +1,60 @@
+#historysplitter {
+    .flex(1);
+}
+
+.vsplitbar {
+    width: 3px;
+    background: @bgcolor + 25;
+    .box-shadow(-2px, -2px, 2px);
+}
+
+#shotlist {
+    width: 110px;
+    background: @bgcolor + 10;
+    overflow-y: scroll;
+    .box(vertical, stretch, stretch);
+}
+
+#shotinfo {
+    .box(vertical, stretch, stretch);
+}
+
+.histli {
+    font-family: 'Terminal Dosis', sans-serif;
+    height: 40px;
+    .box(vertical);
+    .box-shadow(0px, 0px, 1px);
+    .linear-gradient(@bgcolor + 5, @bgcolor - 5);
+    font-size: 13px;
+    .transition(all, 0.4s);
+    opacity: 0.7;
+}
+
+.histli_active {
+    height: 100px;
+    @color: #F29F05;
+    .linear-gradient(@color, @color - 50);
+    .transition(all, 0.2s);
+    opacity: 1;
+    position: relative;
+    left: -20;
+    z-index: 100;
+}
+
+.histli:hover {
+    .transition(all, 0.1s);
+    opacity: 1;
+}
+
+.histtitle {
+    background: @bgcolor + 40;
+    padding: 20px;
+    .border-radius(6px);
+    margin: 5px;
+    .box-shadow();
+}
+
+.histlog {
+    .flex(1);
+    padding: 20px;
+}

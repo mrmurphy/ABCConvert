@@ -1,25 +1,57 @@
-@import "mixins";
+@import "vendor_prefixes";
+@import "convert";
+@import "sidebar";
+@import "history";
+
+// Variables
 @bgcolor: #444444;
+///
+
+// Some mixins here:
+.mainbg(){
+    background-color: @bgcolor;
+	background-image: url("../images/bg.png");
+}
+
 body {
     width: 100%;
     height: 100%;
     margin: 0px;
     padding: 0px;
     font-family: Arial;
-    background-color: @bgcolor;
-	background-image: url("../images/bg.png");
 	color: white;
-	text-align: center;
-    .display-box();
-    .box-orient(horizontal);
-    .box-align(stretch);
-}
-
-#sidebar {
-    background: purple;
-    width: 70px;
+    .mainbg();
+    .box(horizontal, stretch, stretch);
 }
 
 #stage {
-    .box-flex(1);
+    .flex(1);
+    .box(horizontal, stretch, stretch)
+}
+
+.buttonstyle(@color: #355DB5){
+    .linear-gradient(@color + 10, @color - 10);
+    outline: none;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    font: 14px/100% Arial, Helvetica, sans-serif;
+    padding: .5em 2em .55em;
+    text-shadow: 0 1px 1px rgba(0,0,0,.3);
+    .border-radius(5);
+    margin: 5px 0px;
+    -webkit-box-shadow: 0 1px 2px rgba(0,0,0,.2);
+    -moz-box-shadow: 0 1px 2px rgba(0,0,0,.2);
+    box-shadow: 0 1px 2px rgba(0,0,0,.2);
+}
+
+.button{
+    .buttonstyle(#7C8C03);
+}
+.button:hover {
+    text-decoration: none;
+}
+.button:active {
+    position: relative;
+    top: 1px;
 }

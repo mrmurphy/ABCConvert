@@ -2,37 +2,50 @@
 import sys
 sys.path.append("python/")
 ## Do imports:
-from bottle import route, run, static_file, template
+from bottle import route, run, static_file, template, view
 import Shot
+import sqlite3
 #######################
-
-shots = {}
-CurShotId = 0
-#curSid = curShot.GetId()
+# TODO: Make a CFG file?
+db_name = "shots.sqlite"
+#shots = {}
+#CurShotId = 0
 
 # For routing normal html
 @route('/main')
-def MainPage():
-    return template('templates/main')
+@route('/main/:page')
+def MainPage(page=''):
+    return template('templates/main.tpl', target=page)
 
-@route('/NewConvert/:name')
-def NewShot(name=''):
-    global shots
-    global CurShotId
-    curShot = Shot.Shot(name)
-    CurShotId = curShot.GetId()
-    shots[CurShotId] = curShot
-    curShot.run()
-    return '<b>Now converting %s!</b>' % name
+@route('/GetStage/:name')
+def GetStage(name=''):
+    return template('templates/'+name)
 
-@route('/CheckShot')
-def CheckShot():
-    global shots
-    global CurShotId
-    print "I'm in checkshot"
-    finished = shots[CurShotId].GetFinished()
-    log = shots[CurShotId].GetLog()
-    return {'finished':finished, 'log':log}
+@route('/GetDB/history')
+def GetDBHistory():
+    with sqlite3.connect(db_name) as conn:
+        conn.row_factory = sqlite3.Row
+        cur = conn.cursor()
+        cur.execute("""
+        select rowid,* from Shots
+        """)
+        entries = cur.fetchall()
+        return template("templates/histlist.tpl", ent=entries)
+
+@route('/GetDB/history/:id')
+def GetDBHistory(id=''):
+        entries = ExecQuery("""
+        select name,log from Shots where rowid=%s
+        """%(id))
+        return template("templates/histdisp.tpl", ent=entries[0])
+
+def ExecQuery(query):
+    with sqlite3.connect(db_name) as conn:
+        conn.row_factory = sqlite3.Row
+        cur = conn.cursor()
+        cur.execute(query)
+        entries = cur.fetchall()
+        return entries
 
 @route('/images/:filename')
 def GetImage(filename):
@@ -44,4 +57,4 @@ def GetJava(filename):
 def GetStyles(filename):
     return static_file(filename, root='styles/')
 
-run(host='localhost', port=8080, reloader=True)
+run(host='localhost', port=8080, reloader=True, debug=True)
