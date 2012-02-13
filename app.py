@@ -8,8 +8,6 @@ import sqlite3
 #######################
 # TODO: Make a CFG file?
 db_name = "shots.sqlite"
-#shots = {}
-#CurShotId = 0
 
 # For routing normal html
 @route('/main')
@@ -33,7 +31,7 @@ def GetDBHistory():
         return template("templates/histlist.tpl", ent=entries)
 
 @route('/GetDB/history/:id')
-def GetDBHistory(id=''):
+def GetDBHistoryByID(id=''):
         entries = ExecQuery("""
         select name,log from Shots where rowid=%s
         """%(id))

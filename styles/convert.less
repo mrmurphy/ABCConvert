@@ -34,12 +34,22 @@
 }
 
 .textview {
-    background: @bgcolor - 25;
-    .border-radius(6);
-    padding: 10px;
+    .darkinset();
     .flex(1);
     font-size: 12px;
     color: @bgcolor + 80;
-    box-shadow:inset 0 0 10px rgba(0,0,0,0.3);
 }
 
+.filepicker{
+    .darkinset();
+    .flex(1);
+}
+
+#convert_seldiv{
+    .flex(1);
+    .box(vertical, stretch, stretch);
+}
+#convert_progdiv{
+    .flex(10);
+    .box(vertical, stretch, stretch);
+}

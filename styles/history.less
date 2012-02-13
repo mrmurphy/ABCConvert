@@ -1,15 +1,15 @@
 #historysplitter {
     .flex(1);
+    margin-left: 10px;
 }
 
 .vsplitbar {
-    width: 3px;
-    background: @bgcolor + 25;
-    .box-shadow(-2px, -2px, 2px);
+    .mainbg();
+    width: 5px;
 }
 
 #shotlist {
-    width: 110px;
+    width: 180px;
     background: @bgcolor + 10;
     overflow-y: scroll;
     .box(vertical, stretch, stretch);
@@ -20,7 +20,8 @@
 }
 
 .histli {
-    font-family: 'Terminal Dosis', sans-serif;
+    //font-family: 'Terminal Dosis', sans-serif;
+    padding: 5px;
     height: 40px;
     .box(vertical);
     .box-shadow(0px, 0px, 1px);
@@ -28,16 +29,14 @@
     font-size: 13px;
     .transition(all, 0.4s);
     opacity: 0.7;
+    box-shadow:inset 0 0 10px rgba(0,0,0,0.3);
 }
 
 .histli_active {
     height: 100px;
-    @color: #F29F05;
-    .linear-gradient(@color, @color - 50);
+    .linear-gradient(@titlecolor, @titlecolor - 50);
     .transition(all, 0.2s);
     opacity: 1;
-    position: relative;
-    left: -20;
     z-index: 100;
 }
 
@@ -47,14 +46,10 @@
 }
 
 .histtitle {
-    background: @bgcolor + 40;
-    padding: 20px;
-    .border-radius(6px);
-    margin: 5px;
-    .box-shadow();
+    .title_style();
 }
 
 .histlog {
     .flex(1);
-    padding: 20px;
+    .darkinset();
 }

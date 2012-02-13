@@ -1,5 +1,6 @@
-<form name="input" action="html_form_action.asp" method="get">
-First name: <input type="text" name="FirstName" value="Mickey" /><br />
-Last name: <input type="text" name="LastName" value="Mouse" /><br />
-<input type="submit" value="Submit" />
-</form> 
+<div id="settings_wrapper">
+<div id="settings_outline">
+<span class="title">Base path for shots:</span><div class="field" contentEditable="true">/</div>
+<div class="button" id="settings_but_save">Save</div>
+</div>
+</div>

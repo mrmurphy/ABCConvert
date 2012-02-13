@@ -2,9 +2,12 @@
 @import "convert";
 @import "sidebar";
 @import "history";
+@import "settings";
 
 // Variables
 @bgcolor: #444444;
+@titlecolor: saturate(#F18D05, 20);
+@buttoncolor: #00A1CB;
 ///
 
 // Some mixins here:
@@ -13,12 +16,20 @@
 	background-image: url("../images/bg.png");
 }
 
+.title_style() {
+    font-size: 42px;
+    color: @titlecolor;
+    text-shadow: 1px 1px 0px darken(@titlecolor, 20);
+}
+
+///////////////
+
 body {
     width: 100%;
     height: 100%;
     margin: 0px;
     padding: 0px;
-    font-family: Arial;
+    font-family: Fresca;
 	color: white;
     .mainbg();
     .box(horizontal, stretch, stretch);
@@ -30,28 +41,49 @@ body {
 }
 
 .buttonstyle(@color: #355DB5){
-    .linear-gradient(@color + 10, @color - 10);
+    .linear-gradient(@color + 20, @color - 20);
     outline: none;
     cursor: pointer;
     text-align: center;
     text-decoration: none;
-    font: 14px/100% Arial, Helvetica, sans-serif;
     padding: .5em 2em .55em;
-    text-shadow: 0 1px 1px rgba(0,0,0,.3);
+    text-shadow: 1px 1px 1px rgba(0,0,0,1);
     .border-radius(5);
     margin: 5px 0px;
     -webkit-box-shadow: 0 1px 2px rgba(0,0,0,.2);
     -moz-box-shadow: 0 1px 2px rgba(0,0,0,.2);
     box-shadow: 0 1px 2px rgba(0,0,0,.2);
+    border-top: 1px solid @color+60;
+    border-bottom: 1px solid @color - 70;
+    color: white;
+
+    &:hover {
+        text-decoration: none;
+    }
+    &:active {
+        position: relative;
+        top: 1px;
+    }
+}
+
+.field {
+    .darkinset();
+    color: white;
+    outline: none;
+    border: none;
 }
 
 .button{
-    .buttonstyle(#7C8C03);
+    .buttonstyle(@buttoncolor);
 }
-.button:hover {
-    text-decoration: none;
+
+.darkinset(){
+    background: @bgcolor - 25;
+    .border-radius(6);
+    padding: 10px;
+    box-shadow:inset 0 0 10px rgba(0,0,0,0.3);
 }
-.button:active {
-    position: relative;
-    top: 1px;
+
+.title{
+    .title_style();
 }

@@ -2,6 +2,7 @@
 <head>
     <title>ABC Convert</title>
     <link rel="stylesheet/less" type="text/css" href="/styles/main.less">
+    <link href='http://fonts.googleapis.com/css?family=Fresca' rel='stylesheet' type='text/css'>
     <script src="/javasc/less.js" type="text/javascript"></script>
     <script src="/javasc/jquery.js"></script>
     <script src="/javasc/splitter.js"></script>

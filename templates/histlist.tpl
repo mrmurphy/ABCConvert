@@ -15,5 +15,6 @@
             $(".histli_active").removeClass("histli_active");
             $("#"+tid).addClass("histli_active");
         });
+        $('.histli:first').click();
     });
 </script>
