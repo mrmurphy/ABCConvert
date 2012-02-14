@@ -1,11 +1,14 @@
+%setdefault('filepath', '/grp5/estefan/production3d/scenes/shots/')
+%def stage():
 <script>
     $('#convert').addClass('.tab_active');
 </script>
 <div id="convertwrapper">
 <div class="shot">
     <div id="convert_seldiv">
-        <span class="title">Select File to Convert:</span>
-        <div class="filepicker">This is where the file picker will be.</div>
+        <span class="title">Where's the file to convert?</span>
+        <div class="field" contentEditable='true'>{{filepath}}</div>
+        <!--<div class="filepicker">This is where the file picker will be.</div>--!>
         <div class="button" id="startconvert">Go!</div>
     </div>
     <div id="convert_progdiv">
@@ -21,10 +24,10 @@
         $("#convert_seldiv").show();
     }
     function convert_progdivstate(){
-        $("#convert_progdiv").show();
-        $("#convert_progbar").show();
-        $("#convert_seldiv").hide();
-        $("#newconvert").hide();
+        $("#convert_progdiv").slideDown();
+        $("#convert_progbar").slideDown();
+        $("#convert_seldiv").slideUp();
+        $("#newconvert").slideUp();
     }
     function convert_finishstate(){
         $("#convert_progdiv").slideDown();
@@ -44,3 +47,6 @@
         convert_seldivstate();
     });
 </script>
+%return ""
+%end
+%rebase templates/main stage=stage, target="convert"

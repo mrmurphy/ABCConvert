@@ -11,11 +11,16 @@
     <div id="sidebar">
     %include templates/sidebar
     </div>
-    <div id="stage">This stage will contain the page for </div>
+    <div id="stage">
+    %include
+    {{stage()}}
+    </div>
     <script>
+        /*
         $.get("/GetStage/{{target}}", function(data){
             $("#stage").html(data);
         });
+        */
         $('#{{target}}_tab').addClass('tab_active');
     </script>
 </body>

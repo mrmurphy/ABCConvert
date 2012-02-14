@@ -15,6 +15,18 @@ db_name = "shots.sqlite"
 def MainPage(page=''):
     return template('templates/main.tpl', target=page)
 
+@route('/convert/<path:path>')
+def callback(path):
+    return template('templates/convert.tpl', filepath=path)
+
+@route('/history/')
+def callback():
+    return template('templates/history.tpl')
+
+@route('/settings/')
+def callback():
+    return template('templates/settings.tpl')
+
 @route('/GetStage/:name')
 def GetStage(name=''):
     return template('templates/'+name)
