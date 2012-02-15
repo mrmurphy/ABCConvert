@@ -1,43 +1,44 @@
-#historysplitter {
+#historywrapper {
     .flex(1);
-    margin-left: 10px;
-}
-
-.vsplitbar {
-    .mainbg();
-    width: 5px;
-}
-
-#shotlist {
-    width: 180px;
-    background: @bgcolor + 10;
-    overflow-y: scroll;
     .box(vertical, stretch, stretch);
+    padding: 10px;
 }
 
 #shotinfo {
+    margin-bottom: 5px;
+    .flex(1);
+    .box(vertical, stretch, stretch);
+}
+
+#shotlist {
+    margin-top: 10px;
+    box-shadow:inset 0 0 10px rgba(0,0,0,0.8);
+    .border-radius(5);
+    height: 250px;
+    overflow-y: scroll;
+    background: darken(@bgcolor, 10);
     .box(vertical, stretch, stretch);
 }
 
 .histli {
-    //font-family: 'Terminal Dosis', sans-serif;
-    padding: 5px;
-    height: 40px;
+    //@color: @buttoncolor;
+    padding: 10px 5px;
     .box(vertical);
     .box-shadow(0px, 0px, 1px);
-    .linear-gradient(@bgcolor + 5, @bgcolor - 5);
     font-size: 13px;
-    .transition(all, 0.4s);
     opacity: 0.7;
     box-shadow:inset 0 0 10px rgba(0,0,0,0.3);
 }
 
 .histli_active {
-    height: 100px;
-    .linear-gradient(@titlecolor, @titlecolor - 50);
-    .transition(all, 0.2s);
+    @color: @titlecolor;
+    .linear-gradient(@color, @color - 50);
+    padding: 15px 5px;
+    border-top: 1px solid lighten(@color, 30);
+    border-bottom: 1px solid darken(@color, 30);
+    .transition(padding, 0.2s);
+    //.border-radius(0);
     opacity: 1;
-    z-index: 100;
 }
 
 .histli:hover {
@@ -47,9 +48,14 @@
 
 .histtitle {
     .title_style();
+    font-size: 40px;
 }
 
 .histlog {
     .flex(1);
     .darkinset();
+}
+
+#shotsfilter {
+    margin: 5px;
 }

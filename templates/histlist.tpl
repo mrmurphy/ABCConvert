@@ -1,4 +1,4 @@
-<link href='http://fonts.googleapis.com/css?family=Terminal+Dosis' rel='stylesheet' type='text/css'>
+%#<div id="shotsfilter" class="field" contentEditable="true">Filter...</div>
 %for entry in ent:
 <div class="histli" id="{{entry["ROWID"]}}">
     <span class="entryname">{{entry["name"]}}</span>

@@ -5,7 +5,7 @@
     <link href='http://fonts.googleapis.com/css?family=Fresca' rel='stylesheet' type='text/css'>
     <script src="/javasc/less.js" type="text/javascript"></script>
     <script src="/javasc/jquery.js"></script>
-    <script src="/javasc/splitter.js"></script>
+    <script src="/javasc/lionbars.js"></script>
 <head>
 <body>
     <div id="sidebar">
