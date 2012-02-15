@@ -63,6 +63,11 @@ body {
     border-bottom: 1px solid @color - 70;
     color: white;
 
+    &:focus {
+        @hicolor: spin(@color, -10);
+        box-shadow: 0 0px 4px lighten(@hicolor, 50);
+    }
+
     &:hover {
         text-decoration: none;
     }

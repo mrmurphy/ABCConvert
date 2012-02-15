@@ -4,8 +4,8 @@
     background: @bgcolor - 40;
     width: 70px;
     height: 100%;
-    .box-shadow();
     .box(vertical, stretch, stretch);
+    box-shadow:inset 0 0 10px rgba(0,0,0,0.8);
 
     .tab {
         padding: 5px;
@@ -17,8 +17,7 @@
     }
     .tab_active {
         .mainbg();
-        .border-radius(5);
-        padding-right: 12px;
+        .part-border-radius(5px, 0px, 0px, 5px);
         padding-top: 20px;
         padding-bottom: 20px;
         .transition(all, 0.2s);

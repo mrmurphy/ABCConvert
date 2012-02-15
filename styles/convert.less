@@ -7,23 +7,9 @@
     .box();
 }
 
-/*
-.shot {
-    padding: 10px;
-    margin: 2px;
-    height: 400px;
-    background: @bgcolor + 25;
-    .border-radius(7);
-    .box-shadow();
-    width: 400px;
-    font-size: 24px;
-    //text-align: center;
-    .box(vertical, center, stretch);
-    padding: 20px;
-}
-*/
 .shot {
     width: 500px;
+    .box(vertical, stretch, stretch);
 }
 
 
@@ -46,4 +32,9 @@
 #convert_progdiv{
     .flex(10);
     .box(vertical, stretch, stretch);
+}
+#convert_shotfield{
+    @height: 30px;
+    height: @height;
+    line-height: @height;
 }

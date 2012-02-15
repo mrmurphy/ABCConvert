@@ -1,0 +1,35 @@
+<script src="javasc/jquery.js"></script>
+<div class="foo" href="#">Click this link</div>
+
+<script>
+    $(".foo").click(function(param){
+        alert("Bar.");
+        param.preventDefault();
+    });
+</script>
+
+<html>
+<head>
+  <style>
+  p { color:red; margin:5px; cursor:pointer; }
+  p.hilite { background:yellow; }
+  </style>
+</head>
+<body>
+  <p>First Paragraph</p>
+
+  <p>Second Paragraph</p>
+  <p>Yet one more Paragraph</p>
+<script>
+    $("p").click(function () {
+      $(this).slideUp();
+    });
+    $("p").hover(function () {
+      $(this).addClass("hilite");
+    }, function () {
+      $(this).removeClass("hilite");
+    });
+</script>
+
+</body>
+</html>

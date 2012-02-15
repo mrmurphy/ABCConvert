@@ -5,16 +5,14 @@
 </div>
 %end
 <script>
-    $(document).ready(function() {
-        $('.histli').click(function(e) {
-            event.preventDefault();
-            var tid = this.id;
-            $.get("/GetDB/history/"+tid, function(data){
-                $("#shotinfo").html(data);
-            });
-            $(".histli_active").removeClass("histli_active");
-            $("#"+tid).addClass("histli_active");
+    $('.histli').click(function(e) {
+        e.preventDefault();
+        var tid = this.id;
+        $.get("/GetDB/history/"+tid, function(data){
+            $("#shotinfo").html(data);
         });
-        $('.histli:first').click();
+        $(".histli_active").removeClass("histli_active");
+        $("#"+tid).addClass("histli_active");
     });
+    $('.histli:first').click();
 </script>
