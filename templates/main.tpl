@@ -11,11 +11,12 @@
     %include templates/sidebar
     </div>
     <div id="stage">
-    %include
-    {{stage()}}
+        %include templates/convert
+        %include templates/history
+        %include templates/settings
     </div>
     <script>
-        $('#{{target}}_tab').addClass('tab_active');
+        $('#{{active}}_tab').addClass('tab_active');
     </script>
 </body>
 </html>

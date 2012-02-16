@@ -17,7 +17,8 @@ def MainPage(page=''):
 
 @route('/convert/<path:path>')
 def callback(path):
-    return template('templates/convert.tpl', filepath=path)
+    args = {'active':'convert', 'filepath':path}
+    return template('templates/main.tpl', active='convert', filepath=path)
 
 @route('/history/')
 def callback():

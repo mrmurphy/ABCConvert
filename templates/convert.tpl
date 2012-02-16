@@ -1,5 +1,4 @@
 %setdefault('filepath', '/grp5/estefan/production3d/scenes/shots/')
-%def stage():
 <script>
     $('#convert').addClass('.tab_active');
 </script>
@@ -59,6 +58,3 @@
         }
     });
 </script>
-%return ""
-%end
-%rebase templates/main stage=stage, target="convert"
