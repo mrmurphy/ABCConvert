@@ -1,4 +1,4 @@
-#historywrapper {
+#history_tabbody {
     .flex(1);
     .box(vertical, stretch, stretch);
     padding: 10px;
@@ -46,8 +46,12 @@
 }
 
 .histtitle {
-    .title_style();
+    .title_style(@titlecolor);
     font-size: 40px;
+}
+.titlebody {
+    .title_style(@buttoncolor);
+    font-size: 20px;
 }
 
 .histlog {

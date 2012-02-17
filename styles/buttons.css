@@ -7,16 +7,16 @@ input.button{
     text-shadow: 1px 2px 0px black;
     border: 10px;
     width: 100%;
-    -webkit-border-image: url(../images/blue_button.png) 10 stretch;
-    -moz-border-image: url(../images/blue_button.png) 10 stretch;
+    -webkit-border-image: url(../static/images/blue_button.png) 10 stretch;
+    -moz-border-image: url(../static/images/blue_button.png) 10 stretch;
 }
 input.button:hover { 
-    -webkit-border-image: url(../images/blue_button_over.png) 10 stretch; 
-    -moz-border-image: url(../images/blue_button_over.png) 10 stretch; 
+    -webkit-border-image: url(../static/images/blue_button_over.png) 10 stretch; 
+    -moz-border-image: url(../static/images/blue_button_over.png) 10 stretch; 
 }
 input.button:active { 
-    -webkit-border-image: url(../images/blue_button_down.png) 10 stretch; 
-    -moz-border-image: url(../images/blue_button_down.png) 10 stretch; 
+    -webkit-border-image: url(../static/images/blue_button_down.png) 10 stretch; 
+    -moz-border-image: url(../static/images/blue_button_down.png) 10 stretch; 
 }
 */
 .button {

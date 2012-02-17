@@ -1,30 +1,51 @@
 import time
+import datetime
 import sqlite3
 import multiprocessing as mproc
 
 class Shot():
     def __init__(self, shotName, dbname="shots.sqlite"):
         self.shotName = shotName
-        #DB Stuff:
         self.dbname = dbname
+        date = str(datetime.datetime.now())
         self.OpenDB()
-        self.cur.execute('''CREATE TABLE IF NOT EXISTS Shots (name TEXT, \
-                log TEXT, finished TEXT)''')
-        self.cur.execute("INSERT INTO Shots (name, finished) VALUES \
-                (?,'False')", (shotName,))
+        self.cur.execute("INSERT INTO Shots (name, finished, date, \
+            user, progress) VALUES (?,?,?,?,?)", \
+            (shotName, 'False', date, 'default', '0'))
         self.rowid = str(self.cur.lastrowid)
         self.conn.commit()
         self.CommitAndCloseDB()
 
+    ################
+    ###### Public Methods ######
     def run(self):
-        p = mproc.Process(target=self.ProcessShot)
+        p = mproc.Process(target=self._processShot)
         p.start()
+    ######
 
-    def ProcessShot(self):
+
+    ############
+    ##### Private Member Methods ######
+    def _processShot(self):
         self.UpdateLog("Just starting to sleep...")
         time.sleep(5)
+        self.UpdateLog("I'm still sleeping")
+        self.UpdateProgress("25")
+        time.sleep(3)
+        self.UpdateLog("Yep, no joke")
+        self.UpdateProgress("50")
+        time.sleep(2)
+        self.UpdateLog("Am I close?")
+        self.UpdateProgress("75")
+        time.sleep(2)
         self.UpdateLog("Just finished sleeping.")
+        self.UpdateProgress("100")
         self.UpdateFinished("True")
+    ############
+
+########################################
+#################### Database Section
+########################################
 
     def UpdateFinished(self, status):
         self.OpenDB()
@@ -50,6 +71,12 @@ class Shot():
         self.cur.execute("UPDATE Shots SET log = ? where rowid = ?",
                 (message, self.rowid))
         self.CommitAndCloseDB()
+    
+    def UpdateProgress(self, prog):
+        self.OpenDB()
+        self.cur.execute("UPDATE Shots SET progress = ? WHERE rowid=?",
+                (prog, self.rowid))
+        self.CommitAndCloseDB();
 
     def SetName(self, name):
         self.OpenDB()
@@ -76,3 +103,5 @@ class Shot():
         self.CommitAndCloseDB()
         return retstr
 
+########################################
+########################################

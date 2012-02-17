@@ -1,8 +1,7 @@
-%setdefault('filepath', '/grp5/estefan/production3d/scenes/shots/')
 <script>
     $('#convert').addClass('.tab_active');
 </script>
-<div id="convertwrapper">
+<div id="convert_tabbody" class="tabbody">
 <div class="shot">
     <div id="convert_seldiv">
         <span class="title">Where's the file to convert?</span>
@@ -18,6 +17,19 @@
 </div>
 </div>
 <script>
+    // Global variables:
+    var currentid;
+    // Define functions.
+    function MonitorProgress(tid, dispdivid){
+        $.get("/GetDB/single/progress/"+tid, function(prog){
+            $.get("/GetDB/single/log/"+tid, function(log){
+                $("#"+dispdivid).html(log);
+            });
+            if(prog === '100') return;
+            setTimeout(MonitorProgress, 1000, tid, dispdivid);
+        });
+    }
+
     function convert_seldivstate(){
         $("#convert_progdiv").hide();
         $("#convert_seldiv").show();
@@ -37,6 +49,11 @@
     convert_seldivstate();
 
     $("#startconvert").click(function(){
+        var convpath = $('#convert_shotfield').text();
+        $.get("/RunConvert/"+convpath, function(data){
+            currentid = data;    
+            MonitorProgress(currentid, "logview");
+        });
         convert_progdivstate();
     });
     $("#convert_progbar").click(function(){
@@ -54,7 +71,7 @@
     $(".button").keypress(function(event){
         if( event.which == 13 ){
             event.preventDefault();
-            this.click();
+            $("#"+this.id).click();
         }
     });
 </script>

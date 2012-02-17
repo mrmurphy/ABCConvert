@@ -13,12 +13,12 @@
 // Some mixins here:
 .mainbg(){
     background-color: @bgcolor;
-	background-image: url("../images/bg.png");
+	background-image: url("/static/images/bg.png");
 }
 
-.title_style() {
-    color: @titlecolor;
-    text-shadow: 1px 1px 0px darken(@titlecolor, 20);
+.title_style(@color) {
+    color: @color;
+    text-shadow: 1px 1px 0px darken(@color, 20);
 }
 
 .progressbar {
@@ -26,24 +26,6 @@
     margin: 4px 0px;
     .box();
     .buttonstyle(@titlecolor);
-}
-
-///////////////
-
-body {
-    width: 100%;
-    height: 100%;
-    margin: 0px;
-    padding: 0px;
-    font-family: Fresca;
-	color: white;
-    .mainbg();
-    .box(horizontal, stretch, stretch);
-}
-
-#stage {
-    .flex(1);
-    .box(horizontal, stretch, stretch)
 }
 
 .buttonstyle(@color: #355DB5){
@@ -84,10 +66,6 @@ body {
     border: none;
 }
 
-.button{
-    .buttonstyle(@buttoncolor);
-}
-
 .darkinset(){
     background: @bgcolor - 25;
     .border-radius(6);
@@ -95,7 +73,35 @@ body {
     box-shadow:inset 0 0 10px rgba(0,0,0,0.3);
 }
 
+///////////////
+
+body {
+    width: 100%;
+    height: 100%;
+    margin: 0px;
+    padding: 0px;
+    font-family: Fresca;
+	color: white;
+    .mainbg();
+    .box(horizontal, stretch, stretch);
+}
+
+#stage {
+    .flex(1);
+    .box(horizontal, stretch, stretch)
+}
+
+.tabbody {
+    .flex(1);
+    .box();
+}
+
+
+.button{
+    .buttonstyle(@buttoncolor);
+}
+
 .title{
-    .title_style();
+    .title_style(@titlecolor);
     font-size: 42px;
 }

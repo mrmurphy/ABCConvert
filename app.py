@@ -9,28 +9,23 @@ import sqlite3
 # TODO: Make a CFG file?
 db_name = "shots.sqlite"
 
-# For routing normal html
-@route('/main')
-@route('/main/:page')
-def MainPage(page=''):
-    return template('templates/main.tpl', target=page)
+@route('/app/<root>')
+@route('/app/<root>/<path:path>')
+def callback(root, path="/grp5/"):
+    return template('templates/main.tpl', active=root, filepath=path)
 
-@route('/convert/<path:path>')
+@route('/RunConvert/<path:path>')
 def callback(path):
-    args = {'active':'convert', 'filepath':path}
-    return template('templates/main.tpl', active='convert', filepath=path)
+    curshot = Shot.Shot(path)
+    curshot.run()
+    return curshot.GetId()
 
-@route('/history/')
-def callback():
-    return template('templates/history.tpl')
-
-@route('/settings/')
-def callback():
-    return template('templates/settings.tpl')
-
-@route('/GetStage/:name')
-def GetStage(name=''):
-    return template('templates/'+name)
+@route('/GetDB/single/<column>/<id>')
+def callback(column, id):
+        entries = ExecQuery("""
+        select %s from shots where rowid=%s
+        """%(column, id))
+        return entries[0]
 
 @route('/GetDB/history')
 def GetDBHistory():
@@ -46,7 +41,7 @@ def GetDBHistory():
 @route('/GetDB/history/:id')
 def GetDBHistoryByID(id=''):
         entries = ExecQuery("""
-        select name,log from Shots where rowid=%s
+        select name,log,date,progress from shots where rowid=%s
         """%(id))
         return template("templates/histdisp.tpl", ent=entries[0])
 
@@ -58,14 +53,8 @@ def ExecQuery(query):
         entries = cur.fetchall()
         return entries
 
-@route('/images/:filename')
-def GetImage(filename):
-    return static_file(filename, root='images/')
-@route('/javasc/:filename')
-def GetJava(filename):
-    return static_file(filename, root='javasc/')
-@route('/styles/:filename')
-def GetStyles(filename):
-    return static_file(filename, root='styles/')
+@route('/static/<path:path>')
+def callback(path):
+    return static_file(path, root="");
 
 run(host='localhost', port=8080, reloader=True, debug=True)
