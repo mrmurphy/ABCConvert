@@ -1,6 +1,5 @@
 <a id="convert_tab" class="tab"><img src="/static/images/convert.png"></a>
 <a id="history_tab" class="tab"><img src="/static/images/history.png"></a>
-%#<a id="settings_tab" class="tab"><img src="/static/images/settings.png"></a>
 <script>
 
     var SwitchToTab = function(whichtab){

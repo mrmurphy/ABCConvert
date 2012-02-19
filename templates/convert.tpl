@@ -11,7 +11,7 @@
     </div>
     <div id="convert_progdiv">
         <div class="textview" id="logview">This is where log things will show up.</div>
-        <div class="progressbar" id="convert_progbar">I'm a progress bar.</div>
+        <div id="progressbar"><span id='progpercent'>50</span>%</div>
         <div class="button" tabindex="1" id="newconvert">Do another one!</div>
     </div>
 </div>
@@ -25,7 +25,14 @@
             $.get("/GetDB/single/log/"+tid, function(log){
                 $("#"+dispdivid).html(log);
             });
-            if(prog === '100') return;
+            $("#progressbar").progressbar({
+                value: parseInt(prog)
+            });
+            $("#progpercent").html(prog);
+            if(prog === '100'){
+                convert_finishstate();
+                return;   
+            }
             setTimeout(MonitorProgress, 1000, tid, dispdivid);
         });
     }
@@ -36,17 +43,18 @@
     }
     function convert_progdivstate(){
         $("#convert_progdiv").slideDown();
-        $("#convert_progbar").slideDown();
+        $("#progressbar").slideDown();
         $("#convert_seldiv").slideUp();
         $("#newconvert").slideUp();
     }
     function convert_finishstate(){
         $("#convert_progdiv").slideDown();
-        $("#convert_progbar").slideUp();
+        $("#progressbar").slideUp();
         $("#convert_seldiv").fadeOut();
         $("#newconvert").slideDown();
     }
     convert_seldivstate();
+
 
     $("#startconvert").click(function(){
         var convpath = $('#convert_shotfield').text();
