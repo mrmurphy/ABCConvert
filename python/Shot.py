@@ -1,12 +1,21 @@
 import time
 import datetime
 import sqlite3
+import pymel.core as pm
 import multiprocessing as mproc
 
 class Shot():
     def __init__(self, shotName, dbname="shots.sqlite"):
+
+        # Set up some member variables:
         self.shotName = shotName
         self.dbname = dbname
+        self.dir = os.path.dirname(self.shotName)
+        self.fileTitle = os.path.basename(self.shotName)[:-3]
+        self.abcLoc = os.path.join(self.dir, "cache", self.fileTitle, ".abc")
+        self.outFile = shotName.replace(self.fileTitle, \
+                self.fileTitle + "_cache");
+        ##
         date = str(datetime.datetime.now())
         self.OpenDB()
         self.cur.execute("INSERT INTO Shots (name, finished, date, \
@@ -26,21 +35,189 @@ class Shot():
 
     ############
     ##### Private Member Methods ######
+
     def _processShot(self):
-        self.UpdateLog("Just starting to sleep...")
-        time.sleep(5)
-        self.UpdateLog("I'm still sleeping")
-        self.UpdateProgress("25")
-        time.sleep(3)
-        self.UpdateLog("Yep, no joke")
-        self.UpdateProgress("50")
-        time.sleep(2)
-        self.UpdateLog("Am I close?")
-        self.UpdateProgress("75")
-        time.sleep(2)
-        self.UpdateLog("Just finished sleeping.")
-        self.UpdateProgress("100")
-        self.UpdateFinished("True")
+        # Set RMS Debug level
+        os.environ['RMSDEBUG'] = '1'
+        self.UpdateLog("Importing plugins...")
+
+        # Load plugins
+        pm.loadPlugin("AbcExport")
+        pm.loadPlugin("AbcImport")
+
+        # Loading the file.
+        self.UpdateLog("Maya now opening file: \n" + self.shotName)
+        pm.openFile(self.shotName, force=1)
+        self.UpdateProgress(10);
+
+        # Import all references.
+        _importAllReferences()
+        self.UpdateProgress(20);
+
+        # Build a list of all of the exportable geometry in the scene.
+        abcExportObjs = _selectObjs()
+        self.UpdateProgress(30);
+
+        # Get the start frame and end frame
+        startFrame = pm.playbackOptions(q=1, minTime=True) 
+        startFrame -= 5 # Adjust to allow for preroll
+        self.UpdateLog("First frame of shot is: %s"%(startFrame))
+        endFrame = pm.SCENE.defaultRenderGlobals.endFrame.get()
+        endFrame = pm.playbackOptions(q=1, maxTime=True) 
+        self.UpdateLog("Last frame of shot is: %s"%(endFrame))
+
+        # Alembic export it
+        _exportABC(abcExportObjs, startFrame, endFrame, self.abcLoc)
+        self.UpdateProgress(40);
+
+        # Export Shaders
+        self.UpdateLog("Writing shaders to file..." + self.outFile)
+        _exportShaders()
+        self.UpdateProgress(50);
+
+        # Store the shaders for re-application later.
+        self.UpdateLog("Storing the shaders for re-application...")
+        shadersDict = _storeShaders()
+        self.UpdateProgress(60);
+
+        # Make a new file
+        self.UpdateLog("Opening new file..." + self.outFile)
+        pm.openFile(self.outFile, force=1)
+        self.UpdateProgress(70);
+
+        # Import ABC Cache
+        self.UpdateLog("Importing ABC cache..." + self.abcLoc)
+        pm.mel.eval('AbcImport -ftr -d "%s"'%(self.abcLoc))
+        self.UpdateProgress(80);
+
+        # Re-apply the shaders
+        self.UpdateLog("Re-applying shaders...")
+        _restoreShaders(shadersDict)
+        self.UpdateProgress(90);
+
+        # Save the file
+        self.UpdateLog("Saving the maya file." + self.shotName)
+        pm.saveFile(force=1, type="mayaBinary")
+        self.UpdateProgress(100);
+
+
+    def _importAllReferences():
+        self.UpdateLog("Importing all references...")
+        # Import all references in file
+        done = False
+        while (done == False and (len(pm.listReferences()) != 0) ):
+            refs = pm.listReferences()
+            self.UpdateLog("Importing " + str(len(refs)) + " references.")
+            for ref in refs:
+                if ref.isLoaded():
+                    done = False
+                    ref.importContents()
+                else:
+                    done = True
+        self.UpdateLog("Done importing references...")
+        return True
+
+    def _ABCPyCallback(frameno):
+        self.UpdateLog("ABC Exporting frame number: %s"%(frameno))
+
+    def _exportABC(objs, startFrame, endFrame, ABC_LOC):
+        rootsStr = ""
+        objs = pm.ls(sl=True)
+        for obj in objs:
+            rootsStr += " -root %s"%(obj.name())
+        abcCommand = 'AbcExport -j "-writeVisibility -uv -worldSpace ' + \
+                '-pfc _ABCPyCallback(#FRAME#) ' + \
+                '-frameRange %s %s %s -file %s"'%(startFrame, endFrame, \
+                                                 rootsStr, ABC_LOC)
+        self.UpdateLog(abcCommand)
+        print abcCommand
+        self.UpdateLog("Writing ABC data to file: "+ ABC_LOC)
+        pm.mel.eval(abcCommand)
+
+    def _storeShaders():
+        print "Storing shaders"
+        objects = pm.ls(g=1)
+        shaders = {}
+        for obj in objects:
+            if(len(obj.shadingGroups()) > 0):
+                shaders[str(obj)] = map(str, obj.shadingGroups())
+        return shaders
+
+    def _exportShaders():
+        shaders = pm.ls(materials=1)
+        selection = []
+        # Select all shaders that are attatched to meshes.
+        for shd in shaders:
+            grps = shd.shadingGroups()
+            for grp in shd.shadingGroups():
+                for member in grp.members():
+                    if("Mesh" in str(repr(member))):
+                        selection.append(shd)
+                        selection.append(grp)
+        pm.select(clear=1)
+        pm.select(selection, ne=1)
+        pm.exportSelected(self.outFile, shader=1, force=1)
+
+    def _restoreShaders(shadersDict):
+        objsInScene = set(map(str, pm.ls()))
+        for obj, shs in shadersDict.iteritems():
+            if ( str(obj) in objsInScene ):
+                for shader in shs:
+                    if (str(shader) in objsInScene):
+                        pm.select(obj)
+                        pm.sets(shader, fe=1)
+
+    def _sel_addRigGeo():
+        sel = pm.ls(regex='*_[rR]igs*\d*[_:][Gg]eo')
+        return sel
+
+    def _sel_addOtherGeo():
+        # Add any non-character geo
+        retsel = []
+        geolist = pm.ls(g=True, v=True)
+        for geo in geolist:
+            if ("_rig" not in geo.name() and \
+                "_Rig" not in geo.name() ):
+                # This is important, I only want to select
+                # the top-most transform node for alembic 
+                # export. That's what this command does.
+                parent = geo.getParent(-1)
+                if ("_rig" not in parent.name() and \
+                    "_Rig" not in parent.name()):
+                    retsel.append(parent)
+        return retsel
+
+    def _sel_addCameras():
+        # Select any non-default cameras
+        excludes = ["persp","top","front","side"]
+        retsel = []
+        camlist = pm.ls(ca=True)
+        for cam in camlist:
+            exclude = False
+            for exname in excludes:
+                if cam.startswith(exname):
+                    exclude=True
+            if not exclude:
+                retsel.append(cam.getParent(-1))
+        return retsel
+        
+    def _selectObjs():
+        pm.select(clear=True)
+        sel = []
+
+        # Get geo in the scene.
+        sel = (_sel_addOtherGeo())
+        # Get geo from rigs.
+        rigGeo = _sel_addRigGeo()
+        if len(rigGeo) != 0:
+            sel.append(rigGeo)
+        # Get animation cameras, or layout.
+        cams = _sel_addCameras()
+        if len(cams) != 0:
+            sel.append(cams)
+        pm.select(sel)
+        return sel
+
     ############
 
 ########################################
