@@ -1,4 +1,5 @@
 import time
+import os
 import datetime
 import sqlite3
 import pymel.core as pm
@@ -12,7 +13,7 @@ class Shot():
         self.dbname = dbname
         self.dir = os.path.dirname(self.shotName)
         self.fileTitle = os.path.basename(self.shotName)[:-3]
-        self.abcLoc = os.path.join(self.dir, "cache", self.fileTitle, ".abc")
+        self.abcLoc = os.path.join(self.dir, "cache", self.fileTitle + ".abc")
         self.outFile = shotName.replace(self.fileTitle, \
                 self.fileTitle + "_cache");
         ##
@@ -30,6 +31,7 @@ class Shot():
     def run(self):
         p = mproc.Process(target=self._processShot)
         p.start()
+        print "I've finished my job, MAY I DIE IN PEACE????"
     ######
 
 
@@ -51,11 +53,11 @@ class Shot():
         self.UpdateProgress(10);
 
         # Import all references.
-        _importAllReferences()
+        self._importAllReferences()
         self.UpdateProgress(20);
 
         # Build a list of all of the exportable geometry in the scene.
-        abcExportObjs = _selectObjs()
+        abcExportObjs = self._selectObjs()
         self.UpdateProgress(30);
 
         # Get the start frame and end frame
@@ -67,17 +69,17 @@ class Shot():
         self.UpdateLog("Last frame of shot is: %s"%(endFrame))
 
         # Alembic export it
-        _exportABC(abcExportObjs, startFrame, endFrame, self.abcLoc)
+        self._exportABC(abcExportObjs, startFrame, endFrame, self.abcLoc)
         self.UpdateProgress(40);
 
         # Export Shaders
         self.UpdateLog("Writing shaders to file..." + self.outFile)
-        _exportShaders()
+        self._exportShaders()
         self.UpdateProgress(50);
 
         # Store the shaders for re-application later.
         self.UpdateLog("Storing the shaders for re-application...")
-        shadersDict = _storeShaders()
+        shadersDict = self._storeShaders()
         self.UpdateProgress(60);
 
         # Make a new file
@@ -92,16 +94,16 @@ class Shot():
 
         # Re-apply the shaders
         self.UpdateLog("Re-applying shaders...")
-        _restoreShaders(shadersDict)
+        self._restoreShaders(shadersDict)
         self.UpdateProgress(90);
 
         # Save the file
-        self.UpdateLog("Saving the maya file." + self.shotName)
-        pm.saveFile(force=1, type="mayaBinary")
-        self.UpdateProgress(100);
+        self.UpdateLog("Saving the maya file: " + self.outFile)
+        pm.saveFile(force=1)
+        self.UpdateLog("File saved.")
+        self.UpdateProgress(100)
 
-
-    def _importAllReferences():
+    def _importAllReferences(self):
         self.UpdateLog("Importing all references...")
         # Import all references in file
         done = False
@@ -117,16 +119,15 @@ class Shot():
         self.UpdateLog("Done importing references...")
         return True
 
-    def _ABCPyCallback(frameno):
+    def _ABCPyCallback(self, frameno):
         self.UpdateLog("ABC Exporting frame number: %s"%(frameno))
 
-    def _exportABC(objs, startFrame, endFrame, ABC_LOC):
+    def _exportABC(self, objs, startFrame, endFrame, ABC_LOC):
         rootsStr = ""
         objs = pm.ls(sl=True)
         for obj in objs:
             rootsStr += " -root %s"%(obj.name())
         abcCommand = 'AbcExport -j "-writeVisibility -uv -worldSpace ' + \
-                '-pfc _ABCPyCallback(#FRAME#) ' + \
                 '-frameRange %s %s %s -file %s"'%(startFrame, endFrame, \
                                                  rootsStr, ABC_LOC)
         self.UpdateLog(abcCommand)
@@ -134,7 +135,7 @@ class Shot():
         self.UpdateLog("Writing ABC data to file: "+ ABC_LOC)
         pm.mel.eval(abcCommand)
 
-    def _storeShaders():
+    def _storeShaders(self):
         print "Storing shaders"
         objects = pm.ls(g=1)
         shaders = {}
@@ -143,7 +144,7 @@ class Shot():
                 shaders[str(obj)] = map(str, obj.shadingGroups())
         return shaders
 
-    def _exportShaders():
+    def _exportShaders(self):
         shaders = pm.ls(materials=1)
         selection = []
         # Select all shaders that are attatched to meshes.
@@ -158,7 +159,7 @@ class Shot():
         pm.select(selection, ne=1)
         pm.exportSelected(self.outFile, shader=1, force=1)
 
-    def _restoreShaders(shadersDict):
+    def _restoreShaders(self, shadersDict):
         objsInScene = set(map(str, pm.ls()))
         for obj, shs in shadersDict.iteritems():
             if ( str(obj) in objsInScene ):
@@ -167,11 +168,11 @@ class Shot():
                         pm.select(obj)
                         pm.sets(shader, fe=1)
 
-    def _sel_addRigGeo():
+    def _sel_addRigGeo(self):
         sel = pm.ls(regex='*_[rR]igs*\d*[_:][Gg]eo')
         return sel
 
-    def _sel_addOtherGeo():
+    def _sel_addOtherGeo(self):
         # Add any non-character geo
         retsel = []
         geolist = pm.ls(g=True, v=True)
@@ -187,7 +188,7 @@ class Shot():
                     retsel.append(parent)
         return retsel
 
-    def _sel_addCameras():
+    def _sel_addCameras(self):
         # Select any non-default cameras
         excludes = ["persp","top","front","side"]
         retsel = []
@@ -201,18 +202,18 @@ class Shot():
                 retsel.append(cam.getParent(-1))
         return retsel
         
-    def _selectObjs():
+    def _selectObjs(self):
         pm.select(clear=True)
         sel = []
 
         # Get geo in the scene.
-        sel = (_sel_addOtherGeo())
+        sel = (self._sel_addOtherGeo())
         # Get geo from rigs.
-        rigGeo = _sel_addRigGeo()
+        rigGeo = self._sel_addRigGeo()
         if len(rigGeo) != 0:
             sel.append(rigGeo)
         # Get animation cameras, or layout.
-        cams = _sel_addCameras()
+        cams = self._sel_addCameras()
         if len(cams) != 0:
             sel.append(cams)
         pm.select(sel)
@@ -239,6 +240,7 @@ class Shot():
         self.conn.close()
 
     def UpdateLog(self, message):
+        print message
         self.OpenDB()
         self.cur.execute("SELECT log FROM Shots WHERE rowid=?",
                 (self.rowid,))

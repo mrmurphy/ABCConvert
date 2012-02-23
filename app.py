@@ -3,7 +3,6 @@ import sys
 sys.path.append("python/")
 ## Do imports:
 from bottle import route, run, static_file, template, view
-import Shot
 import sqlite3
 #######################
 # TODO: Make a CFG file?
@@ -16,6 +15,7 @@ def callback(root, path="/grp5/"):
 
 @route('/RunConvert/<path:path>')
 def callback(path):
+    import Shot
     curshot = Shot.Shot(path)
     curshot.run()
     return curshot.GetId()
