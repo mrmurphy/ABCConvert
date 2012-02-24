@@ -60,5 +60,5 @@ def ExecQuery(query):
 def callback(path):
     return static_file(path, root="");
 
-#run(host='localhost', port=8080, reloader=True, debug=True)
-run(host='ct75rf15', port=8080)
+run(host='localhost', port=8080, reloader=True, debug=True)
+#run(host='ct75rf15', port=8080)

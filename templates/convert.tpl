@@ -11,7 +11,7 @@
     </div>
     <div id="convert_progdiv">
         <div class="textview" id="logview">Log.</div>
-        <div id="progressbar"><span id='progpercent'>50</span>%</div>
+        <div id="progressbar"><span id='progpercent_wrap'><span id='progpercent'>50</span>%</span></div>
         <div class="button" tabindex="1" id="newconvert">Do another one!</div>
     </div>
 </div>
