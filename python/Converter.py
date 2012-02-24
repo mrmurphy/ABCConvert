@@ -14,6 +14,11 @@ class Converter():
         self.outFile = shotName.replace(self.fileTitle, \
                 self.fileTitle + "_cache");
         self.rowid = rowid
+        # This is just a messy patch, to preserve the naming convention
+        # in estefan.
+        if ('estefan' in shotName and 'Animation' in self.fileTitle):
+            temp = self.fileTitle.replace("Animation", "Cache")
+            self.outFile = shotName.replace(self.fileTitle, temp);
 
     ################
     ###### Public Methods ######

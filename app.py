@@ -1,5 +1,6 @@
 ## Append to path:
 import sys
+import os
 sys.path.append("python/")
 ## Do imports:
 from bottle import route, run, static_file, template, view
@@ -15,6 +16,8 @@ def callback(root, path="/grp5/"):
 
 @route('/RunConvert/<path:path>')
 def callback(path):
+    if not (os.path.exists(path)):
+        return "ERROR: That file does not exist."
     import Shot
     curshot = Shot.Shot(path)
     curshot.run()
@@ -57,4 +60,5 @@ def ExecQuery(query):
 def callback(path):
     return static_file(path, root="");
 
-run(host='localhost', port=8080, reloader=True, debug=True)
+#run(host='localhost', port=8080, reloader=True, debug=True)
+run(host='ct75rf15', port=8080)

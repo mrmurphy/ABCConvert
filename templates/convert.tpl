@@ -10,7 +10,7 @@
         <div class="button" tabindex="1" id="startconvert">Go!</div>
     </div>
     <div id="convert_progdiv">
-        <div class="textview" id="logview">This is where log things will show up.</div>
+        <div class="textview" id="logview">Log.</div>
         <div id="progressbar"><span id='progpercent'>50</span>%</div>
         <div class="button" tabindex="1" id="newconvert">Do another one!</div>
     </div>
@@ -23,6 +23,9 @@
     function MonitorProgress(tid, dispdivid){
         $.get("/GetDB/single/progress/"+tid, function(prog){
             $.get("/GetDB/single/log/"+tid, function(log){
+                if (log === ""){
+                    log = "Maya is starting..."
+                }
                 $("#"+dispdivid).html(log);
             });
             $("#progressbar").progressbar({
@@ -33,7 +36,7 @@
                 convert_finishstate();
                 return;   
             }
-            setTimeout(MonitorProgress, 1000, tid, dispdivid);
+            setTimeout(MonitorProgress, 250, tid, dispdivid);
         });
     }
 
@@ -59,6 +62,12 @@
     $("#startconvert").click(function(){
         var convpath = $('#convert_shotfield').text();
         $.get("/RunConvert/"+convpath, function(data){
+            // Do some error checking:
+            if (data.substring(0, 5) == 'ERROR'){
+                $("#logview").html(data);
+                convert_finishstate();
+                return;
+            }
             currentid = data;    
             MonitorProgress(currentid, "logview");
         });
