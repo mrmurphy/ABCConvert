@@ -18,6 +18,7 @@
     overflow-y: scroll;
     background: darken(@bgcolor, 10);
     .box(vertical, stretch, stretch);
+    list-style: none;
 }
 
 .histli {
@@ -57,6 +58,13 @@
 .histlog {
     .flex(1);
     .darkinset();
+    overflow-y: scroll;
+    p {
+        margin: 0px;
+        padding: 2px;
+        border-top: 1px solid darken(@bgcolor, 13);
+        color: darken(white, 25);
+    }
 }
 
 #shotsfilter {

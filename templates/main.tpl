@@ -7,6 +7,7 @@
     <script src="/static/javasc/less.js" type="text/javascript"></script>
     <script src="/static/javasc/jquery.js"></script>
     <script src="/static/javasc/jquery-ui-1.8.17.custom.min.js"></script>
+    <script src="/static/javasc/jquery.reverseorder.packed.js"></script>
 <head>
 <body>
     <div id="sidebar">

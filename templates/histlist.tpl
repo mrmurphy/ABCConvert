@@ -1,4 +1,4 @@
-%#<div id="shotsfilter" class="field" contentEditable="true">Filter...</div>
+%#<ul id="shotsfilter" class="field" contentEditable="true">Filter...</div>
 %for entry in ent:
 <div class="histli" id="{{entry["ROWID"]}}">
     <span class="entryname">{{entry["name"]}}</span>
