@@ -29,7 +29,8 @@
 
     $(document).ready(function() {
         UpdateHistoryList(function(){
-            ActivateHistLi(1);
+            latestid = $(".histli").get(0).id;
+            ActivateHistLi(latestid);
         });
     });
 </script>
