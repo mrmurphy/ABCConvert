@@ -10,10 +10,13 @@ class Converter():
         self.dbname = dbname
         self.dir = os.path.dirname(self.shotName)
         self.fileTitle = os.path.basename(self.shotName)[:-3]
-        self.abcLoc = os.path.join(self.dir, "cache", self.fileTitle + ".abc")
+        self.cacheDir = os.path.join(self.dir, "cache")
+        self.abcLoc = os.path.join(self.cacheDir, self.fileTitle + ".abc")
         self.outFile = shotName.replace(self.fileTitle, \
                 self.fileTitle + "_cache");
         self.rowid = rowid
+        if not (os.path.isdir(self.cacheDir)):
+            os.mkdir(self.cacheDir)
         # This is just a messy patch, to preserve the naming convention
         # in estefan.
         if ('estefan' in shotName and 'Animation' in self.fileTitle):
@@ -120,10 +123,11 @@ class Converter():
         for obj in objs:
             rootsStr += " -root %s"%(obj.name())
         abcCommand = 'AbcExport -j "-writeVisibility -uv -worldSpace ' + \
+                '-pfc ABCPyCallback(#FRAME#) ' + \
                 '-frameRange %s %s %s -file %s"'%(startFrame, endFrame, \
                                                  rootsStr, ABC_LOC)
-        self.UpdateLog(abcCommand)
-        print abcCommand
+        #self.UpdateLog(abcCommand)
+        #print abcCommand
         self.UpdateLog("Writing ABC data to file: "+ ABC_LOC)
         pm.mel.eval(abcCommand)
 
@@ -162,7 +166,6 @@ class Converter():
 
     def _sel_addRigGeo(self):
         sel = pm.ls(regex='*_[rR]igs*\d*[_:][Gg]eo')
-        sel += pm.ls(regex='*_[rR]igs*\d*[_:][Mm]esh.*')
         return sel
 
     def _sel_addOtherGeo(self):
