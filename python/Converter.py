@@ -162,6 +162,7 @@ class Converter():
 
     def _sel_addRigGeo(self):
         sel = pm.ls(regex='*_[rR]igs*\d*[_:][Gg]eo')
+        sel += pm.ls(regex='*_[rR]igs*\d*[_:][Mm]esh.*')
         return sel
 
     def _sel_addOtherGeo(self):
