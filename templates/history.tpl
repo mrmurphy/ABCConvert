@@ -1,5 +1,6 @@
 <div id="history_tabbody" class="tabbody">
     <div id="shotinfo">This is my shot info</div>
+    <div class="title">Select a past shot to view here:</div>
     <div id="shotlist">This is my shot list</div>
 </div>
 <script>
