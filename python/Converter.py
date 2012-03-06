@@ -12,8 +12,7 @@ class Converter():
         self.fileTitle = os.path.basename(self.shotName)[:-3]
         self.cacheDir = os.path.join(self.dir, "cache")
         self.abcLoc = os.path.join(self.cacheDir, self.fileTitle + ".abc")
-        self.outFile = shotName.replace(self.fileTitle, \
-                self.fileTitle + "_cache");
+        self.outFile = os.path.join(self.dir, self.fileTitle + "_cache" + ".mb")
         self.rowid = rowid
         if not (os.path.isdir(self.cacheDir)):
             os.mkdir(self.cacheDir)
@@ -94,7 +93,9 @@ class Converter():
 
         # Save the file
         self.UpdateLog("Saving the maya file: " + self.outFile)
+        os.system("chmod 755 " + self.outFile)
         pm.saveFile(force=1)
+        os.system("chmod 755 " + self.outFile)
         self.UpdateLog("File saved.")
         self.UpdateProgress(100)
 

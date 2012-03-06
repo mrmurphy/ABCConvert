@@ -32,9 +32,13 @@ class Shot():
     ##### Private Member Methods ######
 
     def _callMaya(self):
-        subprocess.call("/grp5/anim-rgs/usr/autodesk/maya/bin/mayapy python/mayastart.py %s %s"%(self.shotName, self.rowid), shell=True)
+        try:
+            out = subprocess.check_call("/grp5/anim-rgs/usr/autodesk/maya/bin/mayapy python/mayastart.py %s %s"%(self.shotName, self.rowid), shell=True)
+        except subprocess.CalledProcessError:
+            self.UpdateLog("Maya has crashed. SURPRISE!! Sorry.")
+            print "\n\n\n\n\nCRAAAASHH!!!\n\n\n\n\n"
 
-    ############
+   ############
 
 ########################################
 #################### Database Section
@@ -43,6 +47,18 @@ class Shot():
     def OpenDB(self):
         self.conn = sqlite3.connect(self.dbname)
         self.cur = self.conn.cursor()
+
+    def UpdateLog(self, message):
+        print message
+        self.OpenDB()
+        self.cur.execute("SELECT log FROM Shots WHERE rowid=?",
+                (self.rowid,))
+        orig = str(self.cur.fetchone()[0])
+        if (orig != "None"):
+            message = orig + "<br>" + message
+        self.cur.execute("UPDATE Shots SET log = ? where rowid = ?",
+                (message, self.rowid))
+        self.CommitAndCloseDB()
 
     def CommitAndCloseDB(self):
         self.conn.commit()
