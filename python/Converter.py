@@ -13,6 +13,8 @@ class Converter():
         self.cacheDir = os.path.join(self.dir, "cache")
         self.abcLoc = os.path.join(self.cacheDir, self.fileTitle + ".abc")
         self.outFile = os.path.join(self.dir, self.fileTitle + "_cache" + ".mb")
+        if(os.path.exists(self.outFile)):
+            os.remove(self.outFile)
         self.rowid = rowid
         if not (os.path.isdir(self.cacheDir)):
             os.mkdir(self.cacheDir)
