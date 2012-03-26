@@ -13,8 +13,6 @@ class Converter():
         self.cacheDir = os.path.join(self.dir, "cache")
         self.abcLoc = os.path.join(self.cacheDir, self.fileTitle + ".abc")
         self.outFile = os.path.join(self.dir, self.fileTitle + "_cache" + ".mb")
-        if(os.path.exists(self.outFile)):
-            os.remove(self.outFile)
         self.rowid = rowid
         if not (os.path.isdir(self.cacheDir)):
             os.mkdir(self.cacheDir)
@@ -23,6 +21,13 @@ class Converter():
         if ('estefan' in shotName and 'Animation' in self.fileTitle):
             temp = self.fileTitle.replace("Animation", "Cache")
             self.outFile = shotName.replace(self.fileTitle, temp);
+        if(os.path.exists(self.outFile)):
+            self.UpdateLog("Outfile exists")
+            self.UpdateLog(self.outFile)
+            os.system("chmod 777 " + self.outFile)
+            os.remove(self.outFile)
+        else:
+            self.UpdateLog("File " + self.outFile + " does not already exist.")
 
     ################
     ###### Public Methods ######
@@ -95,9 +100,7 @@ class Converter():
 
         # Save the file
         self.UpdateLog("Saving the maya file: " + self.outFile)
-        os.system("chmod 755 " + self.outFile)
         pm.saveFile(force=1)
-        os.system("chmod 755 " + self.outFile)
         self.UpdateLog("File saved.")
         self.UpdateProgress(100)
 
