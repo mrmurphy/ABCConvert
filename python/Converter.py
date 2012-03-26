@@ -22,12 +22,13 @@ class Converter():
             temp = self.fileTitle.replace("Animation", "Cache")
             self.outFile = shotName.replace(self.fileTitle, temp);
         if(os.path.exists(self.outFile)):
-            self.UpdateLog("Outfile exists")
-            self.UpdateLog(self.outFile)
+            #self.UpdateLog("Outfile exists")
+            #self.UpdateLog(self.outFile)
             os.system("chmod 777 " + self.outFile)
             os.remove(self.outFile)
-        else:
-            self.UpdateLog("File " + self.outFile + " does not already exist.")
+        #else:
+            #self.UpdateLog("File " + self.outFile + " does not already exist.")
+            
 
     ################
     ###### Public Methods ######
@@ -142,8 +143,13 @@ class Converter():
         objects = pm.ls(g=1)
         shaders = {}
         for obj in objects:
-            if(len(obj.shadingGroups()) > 0):
-                shaders[str(obj)] = map(str, obj.shadingGroups())
+            # Warning, this is a hack. I put the if statement inside of a try-catch to get around
+            # an exception that was happening in extreme cases. Be careful, as this is a catch-all.
+            try:
+                if(len(obj.shadingGroups()) > 0):
+                    shaders[str(obj)] = map(str, obj.shadingGroups())
+            except:
+                continue
         return shaders
 
     def _exportShaders(self):
