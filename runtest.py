@@ -6,4 +6,4 @@ curshot = Shot.Shot('/grp7/projectsmurp/ABCConvert/unittest/unittest.mb')
 curshot.run()
 print "Hello!"
 
-os._exit(0);
+os._exit(0)

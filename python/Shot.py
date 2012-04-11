@@ -1,8 +1,8 @@
-import time
 import datetime
 import sqlite3
 import multiprocessing as mproc
 import subprocess
+
 
 class Shot():
     def __init__(self, shotName, dbname="shots.sqlite"):
@@ -27,13 +27,13 @@ class Shot():
         p.start()
     ######
 
-
     ############
     ##### Private Member Methods ######
-
     def _callMaya(self):
         try:
-            out = subprocess.check_call("/grp5/anim-rgs/usr/autodesk/maya/bin/mayapy python/mayastart.py %s %s"%(self.shotName, self.rowid), shell=True)
+            subprocess.check_call("/grp5/anim-rgs/usr/autodesk/maya/bin/mayapy\
+                python/mayastart.py %s %s" % (self.shotName, self.rowid),\
+                shell=True)
         except subprocess.CalledProcessError:
             self.UpdateLog("Maya has crashed. SURPRISE!! Sorry.")
             print "\n\n\n\n\nCRAAAASHH!!!\n\n\n\n\n"
